@@ -34,4 +34,19 @@ public class BankAccount
     {
         return balance;
     }
+
+    private void setBalance(double balance)
+    {
+        this.balance = balance;
+    }
+
+    public double deposit(double depositAmount)
+    {
+        if (depositAmount <= 0.00) {
+            throw new IllegalArgumentException("Deposit amount must be greater than 0.");
+        }
+        setBalance(getBalance() + depositAmount);
+        return getBalance();
+    }
+
 }
