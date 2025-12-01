@@ -35,7 +35,7 @@ public class BankAccountTest
     }
 
     @Test
-    void deposit_PositiveAmount_UpdatedBalance()
+    void deposit_PositiveAmount_IncreasedBalance()
     {
         account = new BankAccount("ACC12345", "Jeff", 100);
         assertEquals(100.01, account.deposit(0.01));
@@ -51,4 +51,25 @@ public class BankAccountTest
         assertEquals("Deposit amount must be greater than 0.", ex.getMessage());
     }
 
+    @Test
+    void withdraw_PositiveAmount_ReducedBalance() {
+        account = new BankAccount("ACC12345", "Jeff", 100);
+        assertEquals(99.99, account.withdraw(0.01));
+        assertEquals(98.99, account.withdraw(1.00));
+        assertEquals(88.99, account.withdraw(10.00));
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {0, -1, -200})
+    void withdraw_NegativeAmount_ThrowsException(double illegalAmount) {
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> account.withdraw(illegalAmount));
+        assertEquals("Withdraw amount must be greater than 0.", ex.getMessage());
+    }
+
+    @Test
+    void withdraw_OverdrawnAmount_ThrowsException() {
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> account.withdraw(110));
+        assertEquals("Withdrawal amount exceeds current balance. Overdraw facility not authorized",
+                ex.getMessage());
+    }
 }
