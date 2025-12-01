@@ -2,9 +2,10 @@ package ie.atu;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BankAccountTest
 {
@@ -31,6 +32,23 @@ public class BankAccountTest
         Exception ex = assertThrows(IllegalArgumentException.class, () -> new BankAccount("ACC12345",
                 "Jeff", -100));
         assertEquals("Opening balance must be greater than 0.", ex.getMessage());
+    }
+
+    @Test
+    void deposit_PositiveAmount_UpdatedBalance()
+    {
+        account = new BankAccount("ACC12345", "Jeff", 100);
+        assertEquals(100.01, account.deposit(0.01));
+        assertEquals(101.01, account.deposit(1.00));
+        assertEquals(201.01, account.deposit(100));
+    }
+
+    @ParameterizedTest
+    @ValueSource(doubles = {0, -1, -200})
+    void deposit_NegativeAmount_ThrowsException(double illegalAmount)
+    {
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> account.deposit(illegalAmount));
+        assertEquals("Deposit amount must be greater than 0.", ex.getMessage());
     }
 
 }
