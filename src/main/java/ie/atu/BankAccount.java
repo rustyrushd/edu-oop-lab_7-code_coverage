@@ -18,6 +18,9 @@ public class BankAccount
 
     public BankAccount()
     {
+        this.accNo = "";
+        this.name = "";
+        this.balance = 0;
     }
 
     public String getAccNo()
@@ -49,4 +52,18 @@ public class BankAccount
         return getBalance();
     }
 
+    public double withdraw(double withdrawAmount)
+    {
+        if  (withdrawAmount <= 0) {
+            throw new IllegalArgumentException("Withdraw amount must be greater than 0.");
+        }
+        else if  (getBalance() < withdrawAmount) {
+            throw new IllegalArgumentException("Withdrawal amount exceeds current balance. Overdraw facility not "
+                    + "authorized");
+        }
+        else {
+            setBalance(getBalance() - withdrawAmount);
+            return getBalance();
+        }
+    }
 }
