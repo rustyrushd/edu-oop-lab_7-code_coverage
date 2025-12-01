@@ -14,13 +14,21 @@ public class BankAccountTest
     @BeforeEach
     public void setUp()
     {
+        account = new BankAccount("ACC12345", "Jeff", 100);
+    }
+
+    @Test
+    void constructor_InitDefault_Success()
+    {
         account = new BankAccount();
+        assertEquals("", account.getAccNo());
+        assertEquals("", account.getName());
+        assertEquals(0, account.getBalance());
     }
 
     @Test
     void constructor_InitValidInput_Success()
     {
-        account = new BankAccount("ACC12345", "Jeff", 100);
         assertEquals("ACC12345", account.getAccNo());
         assertEquals("Jeff", account.getName());
         assertEquals(100, account.getBalance());
@@ -37,7 +45,6 @@ public class BankAccountTest
     @Test
     void deposit_PositiveAmount_IncreasedBalance()
     {
-        account = new BankAccount("ACC12345", "Jeff", 100);
         assertEquals(100.01, account.deposit(0.01));
         assertEquals(101.01, account.deposit(1.00));
         assertEquals(201.01, account.deposit(100));
@@ -53,7 +60,6 @@ public class BankAccountTest
 
     @Test
     void withdraw_PositiveAmount_ReducedBalance() {
-        account = new BankAccount("ACC12345", "Jeff", 100);
         assertEquals(99.99, account.withdraw(0.01));
         assertEquals(98.99, account.withdraw(1.00));
         assertEquals(88.99, account.withdraw(10.00));

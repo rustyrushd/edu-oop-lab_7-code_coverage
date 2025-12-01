@@ -18,6 +18,9 @@ public class BankAccount
 
     public BankAccount()
     {
+        this.accNo = "";
+        this.name = "";
+        this.balance = 0;
     }
 
     public String getAccNo()
